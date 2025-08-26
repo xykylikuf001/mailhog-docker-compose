@@ -1,0 +1,15 @@
+services:
+  mailhog:
+    container_name: ${STACK_NAME?Variable not set}-mailhog
+    #    image: mailhog/mailhog
+    build:
+      context: ./src/mailhog
+      dockerfile: ./Dockerfile
+    ports:
+      - ${MAILHOG_SMTP_SERVER_PORT}:1025 # smtp server
+      - ${MAILHOG_WEB_UI_PORT}:8025 # web ui. Visit http://localhost:8025/ to check emails
+    restart: unless-stopped
+    environment:
+      - MH_HOSTNAME=${MH_HOSTNAME}
+      - MH_STORAGE=memory
+      - MH_OUTGOING_SMTP=/outgoing/outgoing.json
